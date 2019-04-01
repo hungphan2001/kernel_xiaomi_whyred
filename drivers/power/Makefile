@@ -1,80 +1,192 @@
-subdir-ccflags-$(CONFIG_POWER_SUPPLY_DEBUG) := -DDEBUG
+#
+# Makefile for the Linux kernel device drivers.
+#
+# 15 Sep 2000, Christoph Hellwig <hch@infradead.org>
+# Rewritten to use lists instead of if-statements.
+#
 
-power_supply-y				:= power_supply_core.o
-power_supply-$(CONFIG_SYSFS)		+= power_supply_sysfs.o
-power_supply-$(CONFIG_LEDS_TRIGGERS)	+= power_supply_leds.o
+obj-y				+= irqchip/
+obj-y				+= bus/
 
-obj-$(CONFIG_POWER_SUPPLY)	+= power_supply.o
-obj-$(CONFIG_GENERIC_ADC_BATTERY)	+= generic-adc-battery.o
+obj-$(CONFIG_GENERIC_PHY)	+= phy/
 
-obj-$(CONFIG_PDA_POWER)		+= pda_power.o
-obj-$(CONFIG_APM_POWER)		+= apm_power.o
-obj-$(CONFIG_AXP20X_POWER)	+= axp20x_usb_power.o
-obj-$(CONFIG_MAX8925_POWER)	+= max8925_power.o
-obj-$(CONFIG_WM831X_BACKUP)	+= wm831x_backup.o
-obj-$(CONFIG_WM831X_POWER)	+= wm831x_power.o
-obj-$(CONFIG_WM8350_POWER)	+= wm8350_power.o
-obj-$(CONFIG_TEST_POWER)	+= test_power.o
+# GPIO must come after pinctrl as gpios may need to mux pins etc
+obj-$(CONFIG_PINCTRL)		+= pinctrl/
+obj-y				+= gpio/
+obj-y				+= pwm/
+obj-$(CONFIG_PCI)		+= pci/
+obj-$(CONFIG_PARISC)		+= parisc/
+obj-$(CONFIG_RAPIDIO)		+= rapidio/
+obj-y				+= video/
+obj-y				+= idle/
 
-obj-$(CONFIG_BATTERY_88PM860X)	+= 88pm860x_battery.o
-obj-$(CONFIG_BATTERY_DS2760)	+= ds2760_battery.o
-obj-$(CONFIG_BATTERY_DS2780)	+= ds2780_battery.o
-obj-$(CONFIG_BATTERY_DS2781)	+= ds2781_battery.o
-obj-$(CONFIG_BATTERY_DS2782)	+= ds2782_battery.o
-obj-$(CONFIG_BATTERY_GAUGE_LTC2941)	+= ltc2941-battery-gauge.o
-obj-$(CONFIG_BATTERY_GOLDFISH)	+= goldfish_battery.o
-obj-$(CONFIG_BATTERY_PMU)	+= pmu_battery.o
-obj-$(CONFIG_BATTERY_OLPC)	+= olpc_battery.o
-obj-$(CONFIG_BATTERY_TOSA)	+= tosa_battery.o
-obj-$(CONFIG_BATTERY_COLLIE)	+= collie_battery.o
-obj-$(CONFIG_BATTERY_IPAQ_MICRO) += ipaq_micro_battery.o
-obj-$(CONFIG_BATTERY_WM97XX)	+= wm97xx_battery.o
-obj-$(CONFIG_BATTERY_SBS)	+= sbs-battery.o
-obj-$(CONFIG_BATTERY_BQ27XXX)	+= bq27xxx_battery.o
-obj-$(CONFIG_BATTERY_DA9030)	+= da9030_battery.o
-obj-$(CONFIG_BATTERY_DA9052)	+= da9052-battery.o
-obj-$(CONFIG_CHARGER_DA9150)	+= da9150-charger.o
-obj-$(CONFIG_BATTERY_DA9150)	+= da9150-fg.o
-obj-$(CONFIG_BATTERY_MAX17040)	+= max17040_battery.o
-obj-$(CONFIG_BATTERY_MAX17042)	+= max17042_battery.o
-obj-$(CONFIG_BATTERY_Z2)	+= z2_battery.o
-obj-$(CONFIG_BATTERY_RT5033)	+= rt5033_battery.o
-obj-$(CONFIG_CHARGER_RT9455)	+= rt9455_charger.o
-obj-$(CONFIG_BATTERY_S3C_ADC)	+= s3c_adc_battery.o
-obj-$(CONFIG_BATTERY_TWL4030_MADC)	+= twl4030_madc_battery.o
-obj-$(CONFIG_CHARGER_88PM860X)	+= 88pm860x_charger.o
-obj-$(CONFIG_CHARGER_PCF50633)	+= pcf50633-charger.o
-obj-$(CONFIG_BATTERY_JZ4740)	+= jz4740-battery.o
-obj-$(CONFIG_BATTERY_INTEL_MID)	+= intel_mid_battery.o
-obj-$(CONFIG_BATTERY_RX51)	+= rx51_battery.o
-obj-$(CONFIG_AB8500_BM)		+= ab8500_bmdata.o ab8500_charger.o ab8500_fg.o ab8500_btemp.o abx500_chargalg.o pm2301_charger.o
-obj-$(CONFIG_CHARGER_ISP1704)	+= isp1704_charger.o
-obj-$(CONFIG_CHARGER_MAX8903)	+= max8903_charger.o
-obj-$(CONFIG_CHARGER_TWL4030)	+= twl4030_charger.o
-obj-$(CONFIG_CHARGER_LP8727)	+= lp8727_charger.o
-obj-$(CONFIG_CHARGER_LP8788)	+= lp8788-charger.o
-obj-$(CONFIG_CHARGER_GPIO)	+= gpio-charger.o
-obj-$(CONFIG_CHARGER_MANAGER)	+= charger-manager.o
-obj-$(CONFIG_CHARGER_MAX14577)	+= max14577_charger.o
-obj-$(CONFIG_CHARGER_MAX77693)	+= max77693_charger.o
-obj-$(CONFIG_CHARGER_MAX8997)	+= max8997_charger.o
-obj-$(CONFIG_CHARGER_MAX8998)	+= max8998_charger.o
-obj-$(CONFIG_CHARGER_QCOM_SMBB)	+= qcom_smbb.o
-obj-$(CONFIG_CHARGER_BQ2415X)	+= bq2415x_charger.o
-obj-$(CONFIG_CHARGER_BQ24190)	+= bq24190_charger.o
-obj-$(CONFIG_CHARGER_BQ24257)	+= bq24257_charger.o
-obj-$(CONFIG_CHARGER_BQ24735)	+= bq24735-charger.o
-obj-$(CONFIG_CHARGER_BQ25890)	+= bq25890_charger.o
-obj-$(CONFIG_POWER_AVS)		+= avs/
-obj-$(CONFIG_CHARGER_SMB347)	+= smb347-charger.o
-obj-$(CONFIG_CHARGER_TPS65090)	+= tps65090-charger.o
-obj-$(CONFIG_CHARGER_TPS65217)	+= tps65217_charger.o
-obj-$(CONFIG_POWER_RESET)	+= reset/
-obj-$(CONFIG_AXP288_FUEL_GAUGE) += axp288_fuel_gauge.o
-obj-$(CONFIG_AXP288_CHARGER)	+= axp288_charger.o
-obj-$(CONFIG_ARCH_QCOM)		+= qcom/
-obj-$(CONFIG_POWER_SUPPLY)	+= supply/
+# IPMI must come before ACPI in order to provide IPMI opregion support
+obj-$(CONFIG_IPMI_HANDLER)	+= char/ipmi/
 
-# TODO: remove me b/62057517
-subdir-ccflags-y += \
-	-Wno-tentative-definition-incomplete-type
+obj-$(CONFIG_ACPI)		+= acpi/
+obj-$(CONFIG_SFI)		+= sfi/
+# PnP must come after ACPI since it will eventually need to check if acpi
+# was used and do nothing if so
+obj-$(CONFIG_PNP)		+= pnp/
+obj-y				+= amba/
+# Many drivers will want to use DMA so this has to be made available
+# really early.
+obj-$(CONFIG_DMADEVICES)	+= dma/
+
+# SOC specific infrastructure drivers.
+obj-y				+= soc/
+
+obj-$(CONFIG_VIRTIO)		+= virtio/
+obj-$(CONFIG_XEN)		+= xen/
+
+# regulators early, since some subsystems rely on them to initialize
+obj-$(CONFIG_REGULATOR)		+= regulator/
+
+# reset controllers early, since gpu drivers might rely on them to initialize
+obj-$(CONFIG_RESET_CONTROLLER)	+= reset/
+
+# tty/ comes before char/ so that the VT console is the boot-time
+# default.
+obj-y				+= tty/
+obj-y				+= char/
+
+
+# gpu/ comes after char for AGP vs DRM startup and after iommu
+obj-y				+= gpu/
+
+obj-$(CONFIG_CONNECTOR)		+= connector/
+
+# i810fb and intelfb depend on char/agp/
+obj-$(CONFIG_FB_I810)           += video/fbdev/i810/
+obj-$(CONFIG_FB_INTEL)          += video/fbdev/intelfb/
+
+obj-$(CONFIG_PARPORT)		+= parport/
+obj-$(CONFIG_NVM)		+= lightnvm/
+obj-y				+= base/ block/ misc/ mfd/ nfc/ soc/
+obj-$(CONFIG_LIBNVDIMM)		+= nvdimm/
+obj-$(CONFIG_DMA_SHARED_BUFFER) += dma-buf/
+obj-$(CONFIG_NUBUS)		+= nubus/
+obj-y				+= macintosh/
+obj-$(CONFIG_IDE)		+= ide/
+obj-$(CONFIG_CRYPTO)		+= crypto/
+obj-$(CONFIG_SCSI)		+= scsi/
+obj-y				+= nvme/
+obj-$(CONFIG_ATA)		+= ata/
+obj-$(CONFIG_TARGET_CORE)	+= target/
+obj-$(CONFIG_MTD)		+= mtd/
+obj-$(CONFIG_SPI)		+= spi/
+obj-$(CONFIG_SPMI)		+= spmi/
+obj-$(CONFIG_SLIMBUS)		+= slimbus/
+obj-$(CONFIG_SOUNDWIRE)		+= soundwire/
+obj-y				+= hsi/
+obj-y				+= net/
+obj-$(CONFIG_ATM)		+= atm/
+obj-$(CONFIG_FUSION)		+= message/
+obj-y				+= firewire/
+obj-$(CONFIG_UIO)		+= uio/
+obj-$(CONFIG_VFIO)		+= vfio/
+obj-y				+= cdrom/
+obj-y				+= auxdisplay/
+obj-$(CONFIG_PCCARD)		+= pcmcia/
+obj-$(CONFIG_DIO)		+= dio/
+obj-$(CONFIG_SBUS)		+= sbus/
+obj-$(CONFIG_ZORRO)		+= zorro/
+obj-$(CONFIG_ATA_OVER_ETH)	+= block/aoe/
+obj-$(CONFIG_PARIDE) 		+= block/paride/
+obj-$(CONFIG_TC)		+= tc/
+obj-$(CONFIG_UWB)		+= uwb/
+obj-$(CONFIG_USB_PHY)		+= usb/
+obj-$(CONFIG_USB)		+= usb/
+obj-$(CONFIG_USB_SUPPORT)	+= usb/
+obj-$(CONFIG_PCI)		+= usb/
+obj-$(CONFIG_USB_GADGET)	+= usb/
+obj-$(CONFIG_OF)		+= usb/
+obj-$(CONFIG_SERIO)		+= input/serio/
+obj-$(CONFIG_GAMEPORT)		+= input/gameport/
+obj-$(CONFIG_INPUT)		+= input/
+obj-$(CONFIG_RTC_LIB)		+= rtc/
+obj-y				+= i2c/ media/
+obj-$(CONFIG_PPS)		+= pps/
+obj-$(CONFIG_PTP_1588_CLOCK)	+= ptp/
+obj-$(CONFIG_W1)		+= w1/
+obj-$(CONFIG_POWER_SUPPLY)	+= power/
+obj-$(CONFIG_HWMON)		+= hwmon/
+obj-$(CONFIG_THERMAL)		+= thermal/
+obj-$(CONFIG_WATCHDOG)		+= watchdog/
+obj-$(CONFIG_MD)		+= md/
+obj-$(CONFIG_BT)		+= bluetooth/
+obj-$(CONFIG_ACCESSIBILITY)	+= accessibility/
+obj-$(CONFIG_ISDN)		+= isdn/
+obj-$(CONFIG_EDAC)		+= edac/
+obj-$(CONFIG_EISA)		+= eisa/
+obj-y				+= lguest/
+obj-$(CONFIG_CPU_FREQ)		+= cpufreq/
+obj-$(CONFIG_CPU_IDLE)		+= cpuidle/
+obj-y				+= mmc/
+obj-$(CONFIG_MEMSTICK)		+= memstick/
+obj-y				+= leds/
+obj-$(CONFIG_SWITCH)		+= switch/
+obj-$(CONFIG_INFINIBAND)	+= infiniband/
+obj-$(CONFIG_SGI_SN)		+= sn/
+obj-y				+= firmware/
+obj-$(CONFIG_SUPERH)		+= sh/
+obj-$(CONFIG_ARCH_SHMOBILE)	+= sh/
+ifndef CONFIG_ARCH_USES_GETTIMEOFFSET
+obj-y				+= clocksource/
+endif
+obj-$(CONFIG_DCA)		+= dca/
+obj-$(CONFIG_HID)		+= hid/
+obj-$(CONFIG_PPC_PS3)		+= ps3/
+obj-$(CONFIG_OF)		+= of/
+obj-$(CONFIG_SSB)		+= ssb/
+obj-$(CONFIG_BCMA)		+= bcma/
+obj-$(CONFIG_VHOST_RING)	+= vhost/
+obj-$(CONFIG_VHOST)		+= vhost/
+obj-$(CONFIG_VLYNQ)		+= vlynq/
+obj-$(CONFIG_STAGING)		+= staging/
+obj-y				+= platform/
+#common clk code
+obj-y				+= clk/
+
+# iommu/ comes before gpu as gpu are using iommu controllers
+obj-$(CONFIG_IOMMU_SUPPORT)	+= iommu/
+
+obj-$(CONFIG_MAILBOX)		+= mailbox/
+obj-$(CONFIG_HWSPINLOCK)	+= hwspinlock/
+obj-$(CONFIG_REMOTEPROC)	+= remoteproc/
+obj-$(CONFIG_RPMSG)		+= rpmsg/
+
+obj-$(CONFIG_ENERGY_MODEL)	+= energy_model/
+
+# Virtualization drivers
+obj-$(CONFIG_VIRT_DRIVERS)	+= virt/
+obj-$(CONFIG_HYPERV)		+= hv/
+
+obj-$(CONFIG_PM_DEVFREQ)	+= devfreq/
+obj-$(CONFIG_EXTCON)		+= extcon/
+obj-$(CONFIG_MEMORY)		+= memory/
+obj-$(CONFIG_IIO)		+= iio/
+obj-$(CONFIG_VME_BUS)		+= vme/
+obj-$(CONFIG_IPACK_BUS)		+= ipack/
+obj-$(CONFIG_NTB)		+= ntb/
+obj-$(CONFIG_FMC)		+= fmc/
+obj-$(CONFIG_POWERCAP)		+= powercap/
+obj-$(CONFIG_MCB)		+= mcb/
+obj-$(CONFIG_PERF_EVENTS)	+= perf/
+obj-$(CONFIG_RAS)		+= ras/
+obj-$(CONFIG_THUNDERBOLT)	+= thunderbolt/
+obj-$(CONFIG_CORESIGHT)		+= hwtracing/coresight/
+obj-y				+= hwtracing/intel_th/
+obj-$(CONFIG_STM)		+= hwtracing/stm/
+obj-$(CONFIG_ANDROID)		+= android/
+obj-$(CONFIG_NVMEM)		+= nvmem/
+obj-$(CONFIG_FPGA)		+= fpga/
+
+obj-$(CONFIG_BIF)		+= bif/
+
+obj-$(CONFIG_SENSORS_SSC)	+= sensors/
+obj-$(CONFIG_ESOC)              += esoc/
+obj-$(CONFIG_TEE)		+= tee/
+
+obj-$(CONFIG_AINUR_DTS_SW) += dts_eagle/
+obj-$(CONFIG_CHARGER_LIMITER)   += charger_limiter.o
